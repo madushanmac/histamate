@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "717299816770",
+    "project_id": "histamate",
+    "storage_bucket": "histamate.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:717299816770:android:fdf7c853141776f02790db",
+        "android_client_info": {
+          "package_name": "com.example.hista_mate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvqkRQpRM86wYYkkEl0dhgeP8JcxctgX4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
