@@ -1,5 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hista_mate/pages/food_analysis.dart';
+import 'package:hista_mate/pages/login_screen.dart';
 
 import '../Components/InputTextField.dart';
 import '../Components/Primary_button.dart';
@@ -15,64 +16,85 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
-  final repasswordController = TextEditingController();
+  final emailcontroller = TextEditingController();
+  final passwordcontroller = TextEditingController();
 
-  // sign in method
-  void signUserIn() async {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const FoodAnalysis()));
+  // Sign up method
+  void signUserUp() async {
     // Show a dialog with a circular progress indicator
-    // showDialog(
-    //   context: context,
-    //   barrierDismissible: false,
-    //   builder: (context) {
-    //     return Center(
-    //       child: Container(
-    //           height: 120.0,
-    //           width: 120.0,
-    //           padding: const EdgeInsets.all(20.0),
-    //           decoration: BoxDecoration(
-    //               borderRadius: BorderRadius.circular(8), color: Colors.white),
-    //           child: const Column(
-    //             mainAxisAlignment: MainAxisAlignment.center,
-    //             children: [
-    //               Text('please wait'),
-    //               CircularProgressIndicator(
-    //                 color: Colors.black,
-    //               ),
-    //             ],
-    //           )),
-    //     );
-    //   },
-    // );
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return Center(
+          child: Container(
+              height: 120.0,
+              width: 120.0,
+              padding: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8), color: Colors.white),
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Please wait'),
+                  CircularProgressIndicator(
+                    color: Colors.black,
+                  ),
+                ],
+              )),
+        );
+      },
+    );
 
-    // try {
-    //   await FirebaseAuth.instance.signInWithEmailAndPassword(
-    //       email: usernameController.text, password: passwordController.text);
-    // } on FirebaseAuthException catch (e){
-    //   // Show an AlertDialog with an error message if authentication fails
-    //   await showGeneralDialog(
-    //     context: context,
-    //     pageBuilder: (context, _, __) {
-    //       return AlertDialog(
-    //         title: const Text('Authentication Error'),
-    //         content: Text(_getErrorText(e.code)),
-    //         actions: [
-    //           TextButton(
-    //             onPressed: () {
-    //               Navigator.of(context).pop();
-    //             },
-    //             child: const Text('OK'),
-    //           ),
-    //         ],
-    //       );
-    //     },
-    //   );
-    // }
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailcontroller.text, password: passwordcontroller.text);
 
-    // Close the progress dialog
-    // Navigator.of(context).pop(); // comments this because without fill the username and password dialog ok btn will act as normally
+      final user = FirebaseAuth.instance.currentUser;
+      await user!.updateDisplayName(usernameController.text);
+      await user.reload();
+
+      Navigator.of(context).pop(); // Close the progress dialog
+
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+    } on FirebaseAuthException catch (e) {
+      // Show an AlertDialog with an error message if authentication fails
+      Navigator.of(context).pop(); // Close the progress dialog
+
+      await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Authentication Error'),
+            content: Text(_getErrorText(e.code)),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  String _getErrorText(String errorCode) {
+    switch (errorCode) {
+      case 'email-already-in-use':
+        return 'The email address is already in use.';
+      case 'invalid-email':
+        return 'The email address is not valid.';
+      case 'operation-not-allowed':
+        return 'Email/password accounts are not enabled.';
+      case 'weak-password':
+        return 'The password is too weak.';
+      default:
+        return 'An undefined Error happened.';
+    }
   }
 
   @override
@@ -89,10 +111,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             Center(
                 child: Image.asset(
-              'assets/images/splash.png',
-              height: 100,
-              width: 100,
-            )),
+                  'assets/images/splash.png',
+                  height: 100,
+                  width: 100,
+                )),
             Text(
               'Register with Hista mate \nsget your helthy recomondation today',
               style: boldtext,
@@ -108,14 +130,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
               controller: usernameController,
             ),
             InputTextField(
-              hintText: 'password',
-              obsecureText: true,
-              controller: passwordController,
+              hintText: 'email',
+              obsecureText: false,
+              controller: emailcontroller,
             ),
             InputTextField(
-              hintText: 're-enter password',
+              hintText: 'password',
               obsecureText: true,
-              controller: repasswordController,
+              controller: passwordcontroller,
             ),
 
             // Forgot password
@@ -130,9 +152,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               height: height25,
             ),
 
-            // Sign in button
+            // Sign up button
             PrimaryButton(
-              onTap: signUserIn,
+              onTap: signUserUp,
               label: 'Sign up',
             ),
 
@@ -183,7 +205,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               height: 50.0,
             ),
 
-            // Not a member? Register now
+            // Already have an account? Login now
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -194,10 +216,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const SizedBox(
                   width: 4.0,
                 ),
-                const Text(
-                  'Login now',
-                  style: TextStyle(
-                      color: Colors.blue, fontWeight: FontWeight.bold),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginScreen()),
+                    );
+                  },
+                  child: const Text(
+                    'Login now',
+                    style: TextStyle(
+                        color: Colors.blue, fontWeight: FontWeight.bold),
+                  ),
                 )
               ],
             )

@@ -1,8 +1,6 @@
-import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../models/category_model.dart';
 import '../models/info_model.dart';
@@ -20,7 +18,7 @@ class _FoodAnalysisState extends State<FoodAnalysis> {
 
   void _getInitialInfo() {
     categories = CategoryModel.getCategories();
-    info = InfoModel.getInfo();
+
   }
 
   @override
@@ -198,7 +196,7 @@ class _FoodAnalysisState extends State<FoodAnalysis> {
                               fontSize: 16),
                         ),
                         Text(
-                          info[index].discription,
+                          info[index].description,
                           style: const TextStyle(
                               color: Color(0xff7B6F72),
                               fontSize: 13,

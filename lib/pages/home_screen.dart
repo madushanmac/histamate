@@ -1,11 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:hista_mate/AI/ai_bot.dart';
 import 'package:hista_mate/Components/Primary_button.dart';
 import 'package:hista_mate/Components/SqureMenu.dart';
+import 'package:hista_mate/pages/calender_note.dart';
 import 'package:hista_mate/pages/food_analysis.dart';
+import 'package:hista_mate/pages/foods.dart';
 import 'package:hista_mate/pages/profile_details.dart';
 import 'package:hista_mate/styles/Styles.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:page_animation_transition/animations/fade_animation_transition.dart';
+import 'package:page_animation_transition/animations/scale_animation_transition.dart';
+import 'package:page_animation_transition/animations/top_to_bottom_faded.dart';
+import 'package:page_animation_transition/page_animation_transition.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -16,6 +25,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: whiteGrey,
         toolbarHeight: 70.0,
         leading: user.photoURL != null
@@ -27,8 +37,10 @@ class HomeScreen extends StatelessWidget {
               )
             : const Icon(Icons.account_circle, size: 40),
         title: Text(
-          user.email ?? 'No Email',
-          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+          // user.email ?? 'No Email',
+          'Histamate',
+
+          style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
@@ -70,7 +82,7 @@ class HomeScreen extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const FoodAnalysis()));
+                                builder: (context) => const Foods()));
                       },
                       child: const SqureMenu(
                         title: 'Food Analyzer',
@@ -81,33 +93,56 @@ class HomeScreen extends StatelessWidget {
                         icon: Iconsax.activity,
                       ),
                     ),
-                    const SqureMenu(
-                      title: 'Meal Planner',
-                      borderColor: Color.fromARGB(249, 192, 208, 194),
-                      backgroudcolor: Color.fromARGB(249, 191, 206, 193),
-                      icon: Iconsax.activity,
+                    GestureDetector(
+                      onTap: () {
+                        // Navigator.of(context).push(PageAnimationTransition(
+                        //     page: const Calender(),
+                        //     pageAnimationType: FadeAnimationTransition()));
+                      },
+                      child: const SqureMenu(
+                        title: 'Meal Planner',
+                        borderColor: Color.fromARGB(249, 192, 208, 194),
+                        backgroudcolor: Color.fromARGB(249, 191, 206, 193),
+                        icon: Iconsax.activity,
+                      ),
                     ),
                   ],
                 ),
                 const SizedBox(
                   height: 20.0,
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    SqureMenu(
-                      title: 'Symptoms Tracker',
-                      borderColor: Color.fromARGB(249, 192, 208, 194),
-                      backgroudcolor: Color.fromARGB(249, 191, 206, 193),
-                      icon: Iconsax.activity,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(PageAnimationTransition(
+                            page: const Calender(),
+                            pageAnimationType: ScaleAnimationTransition()));
+                      },
+                      child: const SqureMenu(
+                        title: 'Symptoms Tracker',
+                        borderColor: Color.fromARGB(249, 192, 208, 194),
+                        backgroudcolor: Color.fromARGB(249, 191, 206, 193),
+                        icon: Iconsax.activity,
+                      ),
                     ),
-                    SqureMenu(
-                      title: 'AI\nChatbot',
-                      // ignore: use_full_hex_values_for_flutter_colors
-                      borderColor: Color(0xffb86a789),
-                      // ignore: use_full_hex_values_for_flutter_colors
-                      backgroudcolor: Color(0xffb86A789),
-                      icon: Iconsax.call,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(PageAnimationTransition(
+                            page: const Chat(
+                              title: 'Histamate AI- Assistent',
+                            ),
+                            pageAnimationType: ScaleAnimationTransition()));
+                      },
+                      child: const SqureMenu(
+                        title: 'AI\nChatbot',
+                        // ignore: use_full_hex_values_for_flutter_colors
+                        borderColor: Color(0xffb86a789),
+                        // ignore: use_full_hex_values_for_flutter_colors
+                        backgroudcolor: Color(0xffb86A789),
+                        icon: Iconsax.call,
+                      ),
                     ),
                   ],
                 ),
@@ -115,24 +150,48 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: 10.0,
+            height: 50.0,
           ),
           PrimaryButton(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Profile()));
+                Navigator.of(context).push(PageAnimationTransition(
+                    page: Profile(),
+                    pageAnimationType: TopToBottomFadedTransition()));
               },
               label: 'PROFILE'),
           const SizedBox(
             height: 10.0,
           ),
-          PrimaryButton(
-              onTap: () async {
-                await FirebaseAuth.instance.signOut();
-              },
-              label: 'LOGOUT'),
+          // PrimaryButton(
+          //     onTap: () async {
+          //       await FirebaseAuth.instance.signOut();
+          //     },
+          //     label: 'LOGOUT'),
         ],
       ),
     );
   }
 }
+
+
+//Navigator.of(context).push(PageAnimationTransition(page: const PageTwo(), pageAnimationType: BottomToTopTransition()));
+//
+// Navigator.of(context).push(PageAnimationTransition(page: const PageTwo(), pageAnimationType: TopToBottomTransition()));
+//
+// Navigator.of(context).push(PageAnimationTransition(page: const PageTwo(), pageAnimationType: RightToLeftTransition()));
+//
+// Navigator.of(context).push(PageAnimationTransition(page: const PageTwo(), pageAnimationType: LeftToRightTransition()));
+//
+// Navigator.of(context).push(PageAnimationTransition(page: const PageTwo(), pageAnimationType: FadeAnimationTransition()));
+//
+// Navigator.of(context).push(PageAnimationTransition(page: const PageTwo(), pageAnimationType: ScaleAnimationTransition()));
+//
+// Navigator.of(context).push(PageAnimationTransition(page: const PageTwo(), pageAnimationType: RotationAnimationTransition()));
+//
+// Navigator.of(context).push(PageAnimationTransition(page: const PageTwo(), pageAnimationType: TopToBottomFadedTransition()));
+//
+// Navigator.of(context).push(PageAnimationTransition(page: const PageTwo(), pageAnimationType: BottomToTopFadedTransition()));
+//
+// Navigator.of(context).push(PageAnimationTransition(page: const PageTwo(), pageAnimationType: RightToLeftFadedTransition()));
+//
+// Navigator.of(context).push(PageAnimationTransition(page: const PageTwo(), pageAnimationType: LeftToRightFadedTransition()));

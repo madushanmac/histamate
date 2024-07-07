@@ -1,57 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class InfoModel {
   String name;
   String iconPath;
-  String discription;
+  String description;
   Color boxColor;
   bool viewIsSelected;
 
   InfoModel({
     required this.name,
     required this.iconPath,
-    required this.discription,
+    required this.description,
     required this.boxColor,
-    required this.viewIsSelected
+    required this.viewIsSelected,
   });
 
-  static List < InfoModel > getInfo() {
-    List < InfoModel > info = [];
-
-    info.add(
-        InfoModel(
-            name: 'french-fries',
-            iconPath: 'assets/images/foods/french-fries.png',
-
-            discription: 'this is description',
-
-            viewIsSelected: true,
-            boxColor: const Color(0xff4c5762)
-        )
+  static InfoModel fromFirestore(DocumentSnapshot doc) {
+    Map data = doc.data() as Map;
+    return InfoModel(
+      name: data['title'] ?? '',
+      iconPath: data['imageUrl'] ?? '',
+      description: data['description'] ?? '',
+      boxColor: Color(int.parse(data['boxColor'] ?? '0xff4c9762')),
+      viewIsSelected: data['viewIsSelected'] ?? false,
     );
-    info.add(
-        InfoModel(
-            name: 'vegetable',
-            iconPath: 'assets/images/foods/vegetable.png',
+  }
 
-            discription: 'this is  description 2 ',
-
-            viewIsSelected: true,
-            boxColor: const Color(0xffd0d4d0)
-        ),
-    );
-    info.add(
-      InfoModel(
-          name: 'vegetable',
-          iconPath: 'assets/images/foods/hot-pot.png',
-
-          discription: 'this is  description 2 ',
-
-          viewIsSelected: true,
-          boxColor: const Color(0xffd0d4d0)
-      ),
-    );
-
-    return info;
+  static Future<List<InfoModel>> getInfo() async {
+    List<InfoModel> infoList = [];
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('recomondations').get();
+      for (var doc in querySnapshot.docs) {
+        infoList.add(InfoModel.fromFirestore(doc));
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+    return infoList;
   }
 }
