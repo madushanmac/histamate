@@ -41,9 +41,10 @@ dependencies:
   iconsax: ^0.0.8
   page_animation_transition: ^1.0.0
   flutter_gemini_bot: ^0.0.4
-  kalender: ^0.4.1
   firebase_storage: ^12.1.0
   cloud_firestore: ^5.0.2
+  google_fonts: ^6.2.1
+  table_calendar: ^3.1.2
 
 
 dev_dependencies:
