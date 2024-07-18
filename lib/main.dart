@@ -1,4 +1,5 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hista_mate/pages/splash_screen.dart';
@@ -11,6 +12,9 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
+  // addMeal('Weight Loss', 'Vegetarian', 'sample salsad');
+  // addMeal('Muscle Gain', 'Vegan', 'Vegan Protein Shake sample');
+  // addMeal('Maintenance', 'Keto', 'Keto Smoothie sample');
 }
 
 class MyApp extends StatelessWidget {
@@ -20,7 +24,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Hista Mate',
+      debugShowCheckedModeBanner: false,
+      title: 'HistaMate',
       theme: ThemeData(
         primaryColor: Colors.green,
 
@@ -33,3 +38,10 @@ class MyApp extends StatelessWidget {
 }
  // check circuler progress indicator not pop down
 
+void addMeal(String goal, String preference, String mealName) async {
+  await FirebaseFirestore.instance.collection('meals').add({
+    'goal': goal,
+    'preference': preference,
+    'mealName': mealName,
+  });
+}

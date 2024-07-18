@@ -16,23 +16,30 @@ import 'package:flutter_gemini_bot/models/chat_model.dart';
 class _ChatState extends State<Chat> {
 
   List<ChatModel> chatList = []; // Your list of ChatModel objects
-  String apiKey = 'AIzaSyCvZWx3Tiw7IEJ-nHb7YwbPrzq9ZkKx_IQ';
+  String apiKey = 'AIzaSyALKH6vnmGd9MHGAtveqyAzxzcC5YKcR28';
 
    @override
    Widget build(BuildContext context) {
      return  Scaffold(
 
        appBar: AppBar(
-         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+         backgroundColor: Theme.of(context).colorScheme.background,
          title: Text(widget.title,style: const TextStyle(fontWeight: FontWeight.bold),),
        ),
        body: FlutterGeminiChat(
-
          botChatBubbleTextColor: Colors.black87,
-         chatContext: 'you are a histamate food assistant ',
-         chatList: chatList,
+         botChatBubbleColor: Colors.black,
+         userChatBubbleTextColor: Colors.black,
+         userChatBubbleColor: Colors.blueAccent,
+         hintText: 'What are the helthy foods today ?',
          apiKey: apiKey,
+         chatContext: 'you are a histamate food assistant you must only need to tell food related things',
+         chatList: [
+
+         ],
        ), // This trailing comma makes auto-formatting nicer for build methods.
      );
    }
 }
+
+

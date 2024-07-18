@@ -26,6 +26,7 @@ class Profile extends StatelessWidget {
               height: 50.0,
             ),
             Container(
+              width: 400.0,
               decoration: BoxDecoration(
                   color: const Color(
                       0xffb86A789), // Or customize the background color
@@ -48,8 +49,10 @@ class Profile extends StatelessWidget {
                   const SizedBox(
                       height: 16), // Add spacing between icon and text
                   Text(user.email ?? ''),
-                  Text(user.uid ?? 'uid'),
-                  Text(user.displayName ?? ''),
+                  // Text(
+                  //   user.displayName ?? 'no name',
+                  //   style: TextStyle(color: Colors.black),
+                  // ),
                 ],
               ),
             ),

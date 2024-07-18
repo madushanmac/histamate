@@ -28,20 +28,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
       builder: (context) {
         return Center(
           child: Container(
-              height: 120.0,
-              width: 120.0,
-              padding: const EdgeInsets.all(20.0),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8), color: Colors.white),
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Please wait'),
-                  CircularProgressIndicator(
-                    color: Colors.black,
-                  ),
-                ],
-              )),
+            height: 120.0,
+            width: 120.0,
+            padding: const EdgeInsets.all(20.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Colors.white,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+
+
+                CircularProgressIndicator(
+                  color: Colors.black,
+                ),
+              ],
+            ),
+          ),
         );
       },
     );
@@ -110,11 +114,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
               height: 50.0,
             ),
             Center(
-                child: Image.asset(
-                  'assets/images/splash.png',
-                  height: 100,
-                  width: 100,
-                )),
+              child: Image.asset(
+                'assets/images/splash.png',
+                height: 100,
+                width: 100,
+              ),
+            ),
             Text(
               'Register with Hista mate \nsget your helthy recomondation today',
               style: boldtext,
@@ -231,7 +236,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 )
               ],
-            )
+            ),
           ],
         ),
       ),

@@ -5,8 +5,8 @@ class SqureMenu extends StatelessWidget {
       {super.key,
       required this.title,
       required this.borderColor,
-      required this.backgroudcolor,
-      required this.icon});
+
+      required this.icon, required Color backgroundColor, required this.backgroudcolor});
 
   final String title;
   final Color borderColor, backgroudcolor;

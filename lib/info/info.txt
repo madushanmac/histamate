@@ -1,0 +1,100 @@
+
+
+ // Removed Widgets
+
+Column bottom_Container() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(left: 20),
+          child: Text(
+            'Recommendation for you\n ',
+            style: TextStyle(
+                color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600,letterSpacing: 1.5),
+          ),
+        ),
+        SizedBox(
+          height: 250.0,
+          child: FutureBuilder<List<InfoModel>>(
+            future: _infoFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Center(child: Text('No data found'));
+              } else {
+                List<InfoModel> infoList = snapshot.data!;
+                return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: infoList.length,
+                  itemBuilder: (context, index) {
+                    InfoModel info = infoList[index];
+
+                    return Container(
+                      width: 200,
+                      margin: const EdgeInsets.only(left: 10),
+                      decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [Colors.green, Colors.white],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          color: info.boxColor.withOpacity(0.3),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Image.network(
+                            fit: BoxFit.fill,
+                            info.iconPath,
+                            width: 120,
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                info.name,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                    fontSize: 16),
+                              ),
+                              Text(
+                                info.description,
+                                style: const TextStyle(
+                                    color: Color(0xff7B6F72),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            height: 50,
+                            width: 130,
+                            decoration: BoxDecoration(
+                                color: Colors.red[900],
+                                borderRadius: BorderRadius.circular(50)),
+                            child: const Center(
+                              child: Text(
+                                'View',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              }
+            },
+          ),
+        ),
+      ],
+    );
+  }
