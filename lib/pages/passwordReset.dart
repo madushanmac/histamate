@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hista_mate/pages/login_screen.dart';
-import 'package:hista_mate/pages/register_screen.dart';
 import '../Components/InputTextField.dart';
 import '../Components/Primary_button.dart';
 import '../Components/SqureTile.dart';
