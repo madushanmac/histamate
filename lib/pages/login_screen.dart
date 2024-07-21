@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hista_mate/pages/home_screen.dart';
+import 'package:hista_mate/pages/passwordReset.dart';
 import 'package:hista_mate/pages/register_screen.dart';
 
 import '../Components/InputTextField.dart';
@@ -36,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('please wait'),
+
                   CircularProgressIndicator(
                     color: Colors.black,
                   ),
@@ -73,6 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     // Close the progress dialog
     Navigator.of(context).pop();
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
   }
 
   // Method to get error message based on error code
@@ -117,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
             // Username and Password fields
             InputTextField(
-              hintText: 'username',
+              hintText: 'email',
               obsecureText: false,
               controller: usernameController,
             ),
@@ -128,10 +131,14 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
 
             // Forgot password
-            const Row(
+             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text("Forget password?."),
+                InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>PasswordReset()));
+                  },
+                    child: Text("Forget password?.",style: TextStyle(fontWeight: FontWeight.bold,letterSpacing: 1.2),)),
                 Padding(padding: EdgeInsets.symmetric(horizontal: 10.0))
               ],
             ),

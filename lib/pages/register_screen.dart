@@ -38,8 +38,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
-
-
                 CircularProgressIndicator(
                   color: Colors.black,
                 ),
@@ -61,11 +59,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       Navigator.of(context).pop(); // Close the progress dialog
 
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+          context, MaterialPageRoute(builder: (context) => LoginScreen()));
     } on FirebaseAuthException catch (e) {
       // Show an AlertDialog with an error message if authentication fails
       Navigator.of(context).pop(); // Close the progress dialog
-
       await showDialog(
         context: context,
         builder: (context) {
@@ -145,14 +142,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               controller: passwordcontroller,
             ),
 
-            // Forgot password
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text("Forget password?."),
-                Padding(padding: EdgeInsets.symmetric(horizontal: 10.0))
-              ],
-            ),
+
             const SizedBox(
               height: height25,
             ),
@@ -226,7 +216,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const LoginScreen()),
+                          builder: (context) => LoginScreen()),
                     );
                   },
                   child: const Text(

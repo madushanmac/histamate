@@ -19,9 +19,10 @@ class SqureMenu extends StatelessWidget {
         width: 150.0,
         padding: const EdgeInsets.all(20.0),
         decoration: BoxDecoration(
-            border: Border.all(color: borderColor),
+
+            border: Border.all(color: borderColor,width: 3),
             borderRadius: BorderRadius.circular(10),
-            color: backgroudcolor),
+            ),
         child: Center(
             child: Column(
           children: [
@@ -29,7 +30,7 @@ class SqureMenu extends StatelessWidget {
               title,
               style: const TextStyle(fontSize: 20.0),
             ),
-            Icon(icon)
+            Icon(icon,size: 60,)
           ],
         )));
   }

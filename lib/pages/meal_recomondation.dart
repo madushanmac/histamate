@@ -33,6 +33,7 @@ class _MealRecommendationState extends State<MealRecommendation> {
       return {
         'mealName': doc['mealName'] as String,
         'imageUrl': doc['imageUrl'] as String,
+        'Description': doc['Description'] as String,
       };
     }).toList();
 
@@ -124,7 +125,7 @@ class _MealRecommendationState extends State<MealRecommendation> {
                               builder: (context) => FoodDetail(
                                 title: rec['mealName']!,
                                 imagePath: rec['imageUrl']!,
-                                description: 'Description of the meal',
+                                description: rec['Description']!,
                               ),
                             ),
                           );
@@ -142,6 +143,7 @@ class _MealRecommendationState extends State<MealRecommendation> {
                             color: Colors.green[800],
                           ),
                         ),
+                        trailing: Text(rec['Description']!),
                       ),
                     );
                   },

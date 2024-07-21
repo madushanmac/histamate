@@ -4,6 +4,7 @@ import 'package:hista_mate/AI/ai_bot.dart';
 import 'package:hista_mate/Components/Primary_button.dart';
 import 'package:hista_mate/Components/SqureMenu.dart';
 import 'package:hista_mate/pages/foods.dart';
+import 'package:hista_mate/pages/login_screen.dart';
 import 'package:hista_mate/pages/profile_details.dart';
 import 'package:hista_mate/styles/Styles.dart';
 import 'package:iconsax/iconsax.dart';
@@ -42,6 +43,7 @@ class HomeScreen extends StatelessWidget {
           IconButton(
               onPressed: () async {
                 FirebaseAuth.instance.signOut();
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
               },
               icon: const Icon(Icons.logout))
         ],

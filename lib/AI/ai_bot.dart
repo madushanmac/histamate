@@ -30,10 +30,10 @@ class _ChatState extends State<Chat> {
          botChatBubbleTextColor: Colors.black87,
          botChatBubbleColor: Colors.black,
          userChatBubbleTextColor: Colors.black,
-         userChatBubbleColor: Colors.blueAccent,
-         hintText: 'What are the helthy foods today ?',
+         userChatBubbleColor: Colors.black,
+         hintText: 'hi ?',
          apiKey: apiKey,
-         chatContext: 'you are a histamate food assistant you must only need to tell food related things',
+         chatContext: 'you are a histamate food assistant you must only need to tell food related things when user ask you',
          chatList: [
 
          ],

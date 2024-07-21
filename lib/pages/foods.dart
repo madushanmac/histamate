@@ -14,7 +14,9 @@ class Foods extends StatefulWidget {
 class _FoodsState extends State<Foods> {
   final _firestore = FirebaseFirestore.instance.collection('foods');
   final _searchController = TextEditingController();
+  final List<String> ingredients = ['bacon', 'cheese', 'sausages', 'chicken']; // update ingredients
 
+  List<String> selectedIngredients = [];
   List<Map<String, dynamic>> _posts = [];
   List<Map<String, dynamic>> _filteredPosts = [];
   List<CategoryModel> categories = [];
@@ -34,13 +36,26 @@ class _FoodsState extends State<Foods> {
   }
 
   void _listenForPosts() {
-    final query = _firestore.snapshots();
-    query.listen((snapshot) {
-      _posts = snapshot.docs.map((doc) => doc.data()..['id'] = doc.id).toList();
-      _filteredPosts = _posts;
-      setState(() {});
+    _fetchFilteredPosts();
+  }
+
+  Future<void> _fetchFilteredPosts() async {
+    QuerySnapshot querySnapshot;
+    if (selectedIngredients.isEmpty) {
+      querySnapshot = await _firestore.get(); // Fetch all posts
+    } else {
+      querySnapshot = await _firestore
+          .where('ingredients', arrayContainsAny: selectedIngredients)
+          .get();
+    }
+    setState(() {
+      _posts = querySnapshot.docs.map((doc) {
+        return doc.data() as Map<String, dynamic>..['id'] = doc.id;
+      }).toList();
+      _filterPosts();
     });
   }
+
 
   void _filterPosts() {
     final query = _searchController.text.toLowerCase();
@@ -52,33 +67,69 @@ class _FoodsState extends State<Foods> {
     });
   }
 
-  void _getcategories() {
+  void _getCategories() {
     categories = CategoryModel.getCategories();
   }
 
+  void _toggleIngredientSelection(String ingredient) {
+    setState(() {
+      if (selectedIngredients.contains(ingredient)) {
+        selectedIngredients.remove(ingredient); // Remove if already selected
+      } else {
+        selectedIngredients.add(ingredient); // Add if not already selected
+      }
+      _fetchFilteredPosts(); // Fetch posts based on the updated selection
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    _getcategories();
+    _getCategories();
     return Scaffold(
       appBar: appBar(),
       body: ListView(
         children: [
           _searchField(),
+          Column(
+            children: [
+              Container(
+
+                padding: EdgeInsets.all(8.0),
+                margin: EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: ingredients.map((e) {
+                    final isSelected = selectedIngredients.contains(e);
+                    return Flexible(
+                      child: FilterChip(
+                        label: Text(e.toString()),
+                        selected: isSelected,
+                        onSelected: (_) => _toggleIngredientSelection(e),
+                        selectedColor: Colors.blueAccent,
+                        checkmarkColor: Colors.white,
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
+          ),
           midContainer(),
-          _similerFoods(),
+          _similarFoods(),
         ],
       ),
     );
   }
 
-  Column _similerFoods() {
+  Column _similarFoods() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 20.0),
           child: Text(
-            'Similar Products ',
+            'Similar Products',
             style: TextStyle(
                 color: Colors.black,
                 fontSize: 18,
@@ -97,8 +148,8 @@ class _FoodsState extends State<Foods> {
                 scrollDirection: Axis.horizontal,
                 itemCount: categories.length,
                 separatorBuilder: (context, index) => SizedBox(
-                      width: 25.0,
-                    ),
+                  width: 25.0,
+                ),
                 itemBuilder: (context, index) {
                   return Container(
                     width: 100,
@@ -130,71 +181,76 @@ class _FoodsState extends State<Foods> {
                   );
                 }),
           ),
-        )
+        ),
       ],
     );
   }
 
-  // mid container filterd items
+  // mid container filtered items
   Widget midContainer() {
     return Container(
-      decoration: BoxDecoration(
-          // borderRadius: BorderRadius.circular(10), color: Colors.grey[200]
-          ),
       margin: const EdgeInsets.all(5.0),
       padding: const EdgeInsets.all(8.0),
       height: 300.0,
-      child: _posts.isEmpty
-          ? Center(child: CircularProgressIndicator())
+      child: _filteredPosts.isEmpty
+          ? Center(
+        child: Text(
+          'No food items match the selected ingredients',
+          style: TextStyle(
+            color: Colors.red,
+            fontSize: 16,
+          ),
+        ),
+      )
           : ListView.builder(
-              itemCount: _filteredPosts.length,
-              itemBuilder: (context, index) {
-                final post = _filteredPosts[index];
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 5.0),
-                  child: Card(
-                    child: ListTile(
-                      title: Text(
-                        post['title'] ?? 'No Title',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                      subtitle: Text(post['description'] ?? 'No Description'),
-                      leading: (post['imageUrl'] != null &&
-                              post['imageUrl']!.isNotEmpty)
-                          ? Image.network(post['imageUrl']!,
-                              width: 80, height: 120, fit: BoxFit.contain)
-                          : const Icon(Icons.image_not_supported),
-                      trailing: SizedBox(
-                        width: 100,
-                        height: 20,
-                        child: RatingBar(
-                          size: 15,
-                          initialRating: post['rating'] ?? 0,
-                          maxRating: 5,
-                          emptyIcon: Icons.star_border,
-                          filledColor: Colors.orange,
-                          emptyColor: Colors.grey,
-                          halfFilledColor: Colors.orangeAccent,
-                          onRatingChanged: (rating) async {
-                            await _firestore
-                                .doc(post['id'])
-                                .update({'rating': rating});
-                            setState(() {
-                              post['rating'] = rating;
-                            });
-                          },
-                          filledIcon: Icons.star,
-                        ),
-                      ),
-                    ),
+        itemCount: _filteredPosts.length,
+        itemBuilder: (context, index) {
+          final post = _filteredPosts[index];
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 5.0),
+            child: Card(
+              child: ListTile(
+                title: Text(
+                  post['title'] ?? 'No Title',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.0,
+                    letterSpacing: 0.5,
                   ),
-                );
-              },
+                ),
+                subtitle: Text(post['description'] ?? 'No Description'),
+                leading: (post['imageUrl'] != null &&
+                    post['imageUrl']!.isNotEmpty)
+                    ? Image.network(post['imageUrl']!,
+                    width: 80, height: 120, fit: BoxFit.contain)
+                    : const Icon(Icons.image_not_supported),
+                trailing: SizedBox(
+                  width: 100,
+                  height: 20,
+                  child: RatingBar(
+                    size: 15,
+                    initialRating: post['rating'] ?? 0,
+                    maxRating: 5,
+                    emptyIcon: Icons.star_border,
+                    filledColor: Colors.orange,
+                    emptyColor: Colors.grey,
+                    halfFilledColor: Colors.orangeAccent,
+                    onRatingChanged: (rating) async {
+                      await _firestore
+                          .doc(post['id'])
+                          .update({'rating': rating});
+                      setState(() {
+                        post['rating'] = rating;
+                      });
+                    },
+                    filledIcon: Icons.star,
+                  ),
+                ),
+              ),
             ),
+          );
+        },
+      ),
     );
   }
 
@@ -202,7 +258,7 @@ class _FoodsState extends State<Foods> {
   AppBar appBar() {
     return AppBar(
       title: const Text(
-        'MEALS FOR YOU ',
+        'MEALS FOR YOU',
         style: TextStyle(
           color: Colors.black,
           fontSize: 15,
@@ -265,7 +321,7 @@ class _FoodsState extends State<Foods> {
             color: const Color(0xff1D1617).withOpacity(0.11),
             blurRadius: 40,
             spreadRadius: 0.0,
-          )
+          ),
         ],
       ),
       child: TextField(
