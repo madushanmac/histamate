@@ -21,7 +21,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final passwordController = TextEditingController();
 
   // sign in method
-
   void signUserIn() async {
     // Show a dialog with a circular progress indicator
     showDialog(
@@ -38,13 +37,11 @@ class _LoginScreenState extends State<LoginScreen> {
               child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-
                   CircularProgressIndicator(
                     color: Colors.black,
                   ),
                 ],
-              )
-          ),
+              )),
         );
       },
     );
@@ -52,7 +49,14 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: usernameController.text, password: passwordController.text);
+      // Close the progress dialog
+      Navigator.of(context).pop();
+      // Navigate to HomeScreen
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
     } on FirebaseAuthException catch (e) {
+      // Close the progress dialog
+      Navigator.of(context).pop();
       // Show an AlertDialog with an error message if authentication fails
       await showGeneralDialog(
         context: context,
@@ -63,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(); // Close the dialog
                 },
                 child: const Text('OK'),
               ),
@@ -72,21 +76,21 @@ class _LoginScreenState extends State<LoginScreen> {
         },
       );
     }
-
-    // Close the progress dialog
-    Navigator.of(context).pop();
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
   }
 
   // Method to get error message based on error code
   String _getErrorText(String errorCode) {
     switch (errorCode) {
       case 'invalid-email':
-        return 'invalid email .';
+        return 'Invalid email.';
       case 'wrong-password':
         return 'Wrong password provided.';
-      case 'invalid-credential':
-        return 'Please check your password ';
+      case 'user-not-found':
+        return 'No user found for that email.';
+      case 'user-disabled':
+        return 'User account has been disabled.';
+      case 'too-many-requests':
+        return 'Too many attempts. Please try again later.';
       default:
         return 'An error occurred. Please try again later.';
     }
@@ -106,10 +110,10 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             Center(
                 child: Image.asset(
-              'assets/images/splash.png',
-              height: 100,
-              width: 100,
-            )),
+                  'assets/images/splash.png',
+                  height: 100,
+                  width: 100,
+                )),
             Text(
               'Welcome back you Hista Mate\'ve been missed! ',
               style: welcometextStyle,
@@ -131,14 +135,21 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
 
             // Forgot password
-             Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 InkWell(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>PasswordReset()));
-                  },
-                    child: Text("Forget password?.",style: TextStyle(fontWeight: FontWeight.bold,letterSpacing: 1.2),)),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PasswordReset()));
+                    },
+                    child: Text(
+                      "Forget password?.",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, letterSpacing: 1.2),
+                    )),
                 Padding(padding: EdgeInsets.symmetric(horizontal: 10.0))
               ],
             ),
