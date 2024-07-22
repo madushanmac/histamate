@@ -36,13 +36,10 @@ class _PasswordResetState extends State<PasswordReset> {
         },
       );
     } catch (e) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Text(e.toString()),
-          );
-        },
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('May I please have your email address?.'),
+        ),
       );
     }
   }

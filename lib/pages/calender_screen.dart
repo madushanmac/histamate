@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarScreen extends StatefulWidget {
@@ -34,6 +35,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         events[eventDate] = [];
       }
       events[eventDate]!.add({
+        'id': doc.id, // Store the document ID here
         'note': doc['note'],
         'status': doc['status'],
       });
@@ -43,9 +45,20 @@ class _CalendarScreenState extends State<CalendarScreen> {
     });
   }
 
+  void _deleteNote(String docId) async {
+    await FirebaseFirestore.instance.collection('notes').doc(docId).delete();
+    _fetchEvents(); // Refresh events after deleting a note
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Note deleted successfully.'),backgroundColor: Colors.red,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
           'SYMPTOMS TRACKER',
@@ -121,14 +134,32 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 return ListView.builder(
                   itemCount: notes.length,
                   itemBuilder: (context, index) {
-                    final note = notes[index]['note'];
+                    final note = notes[index];
+                    final noteText = note['note'];
+                    final docId = note.id; // Get the document ID here
                     return Card(
                       color: Colors.grey[200],
                       child: ListTile(
                         contentPadding: EdgeInsets.all(5.0),
-                        leading: Image.network(width: 30,height: 30,'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcdQ09IwvGZDsOdOOTtuds8SqOH-ATH_ZnTw&s'),
-                        title: Text(note,style: TextStyle(fontWeight: FontWeight.bold),),
-                        trailing: Icon(Icons.more_vert),
+                        leading: Image.network(
+                          width: 30,
+                          height: 30,
+                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcdQ09IwvGZDsOdOOTtuds8SqOH-ATH_ZnTw&s',
+                        ),
+                        title: Text(
+                          noteText,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        trailing: IconButton(
+                          icon: Icon(
+                            Iconsax.calendar_remove,
+                            size: 30.0,
+                            color: Colors.red,
+                          ),
+                          onPressed: () {
+                            _deleteNote(docId); // Use the document ID to delete the note
+                          },
+                        ),
                       ),
                     );
                   },
