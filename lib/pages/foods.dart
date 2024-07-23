@@ -74,11 +74,11 @@ class _FoodsState extends State<Foods> {
   void _toggleIngredientSelection(String ingredient) {
     setState(() {
       if (selectedIngredients.contains(ingredient)) {
-        selectedIngredients.remove(ingredient); // Remove if already selected
+        selectedIngredients.remove(ingredient);
       } else {
-        selectedIngredients.add(ingredient); // Add if not already selected
+        selectedIngredients.add(ingredient);
       }
-      _fetchFilteredPosts(); // Fetch posts based on the updated selection
+      _fetchFilteredPosts();
     });
   }
 
@@ -231,7 +231,7 @@ class _FoodsState extends State<Foods> {
                     size: 15,
                     initialRating: post['rating'] ?? 0,
                     maxRating: 5,
-                    emptyIcon: Icons.star_border,
+                    emptyIcon: Icons.star,
                     filledColor: Colors.orange,
                     emptyColor: Colors.grey,
                     halfFilledColor: Colors.orangeAccent,
@@ -288,25 +288,7 @@ class _FoodsState extends State<Foods> {
         ),
       ),
       actions: [
-        GestureDetector(
-          onTap: () async {
-            await FirebaseAuth.instance.signOut();
-          },
-          child: Container(
-            margin: const EdgeInsets.all(10),
-            alignment: Alignment.center,
-            width: 37,
-            decoration: BoxDecoration(
-              color: const Color(0xffF7F8F8),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Image.asset(
-              'assets/icons/application.png',
-              height: 25,
-              width: 25,
-            ),
-          ),
-        ),
+
       ],
     );
   }
@@ -351,13 +333,7 @@ class _FoodsState extends State<Foods> {
                     endIndent: 10,
                     thickness: 0.1,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                      'assets/icons/filter.png',
-                      width: 30,
-                    ),
-                  ),
+
                 ],
               ),
             ),

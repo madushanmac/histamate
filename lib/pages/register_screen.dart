@@ -93,7 +93,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       case 'weak-password':
         return 'The password is too weak.';
       default:
-        return 'An undefined Error happened.';
+        return 'Provide the required information to register';
     }
   }
 

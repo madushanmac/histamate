@@ -201,7 +201,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   Color _getStatusColor(String status) {
     switch (status) {
-      case 'high':
+      case 'Headache':
         return Colors.red;
       case 'medium':
         return Colors.orange;
@@ -276,8 +276,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
         child: DropdownButtonFormField<String>(
           value: _selectedStatus,
           items: [
-            DropdownMenuItem(value: 'high', child: Text('High')),
+            DropdownMenuItem(value: 'high', child: Text('Headache')),
             DropdownMenuItem(value: 'medium', child: Text('Medium')),
+            DropdownMenuItem(value: 'low', child: Text('Low')),
             DropdownMenuItem(value: 'low', child: Text('Low')),
           ],
           onChanged: (value) {
