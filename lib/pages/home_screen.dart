@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hista_mate/AI/ai_bot.dart';
 import 'package:hista_mate/Components/Primary_button.dart';
 import 'package:hista_mate/Components/SqureMenu.dart';
 import 'package:hista_mate/pages/foods.dart';

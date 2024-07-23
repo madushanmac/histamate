@@ -4,7 +4,6 @@ import 'package:hista_mate/pages/login_screen.dart';
 
 import '../Components/InputTextField.dart';
 import '../Components/Primary_button.dart';
-import '../Components/SqureTile.dart';
 import '../styles/Styles.dart';
 
 class RegisterScreen extends StatefulWidget {
