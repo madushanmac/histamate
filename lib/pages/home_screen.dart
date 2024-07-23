@@ -113,11 +113,11 @@ class HomeScreen extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(PageAnimationTransition(
-                          page: const Chat(
-                            title: 'Histamate AI- Assistant',
-                          ),
-                          pageAnimationType: ScaleAnimationTransition()));
+                      // Navigator.of(context).push(PageAnimationTransition(
+                      //     page: const Chat(
+                      //       title: 'Histamate AI- Assistant',
+                      //     ),
+                      //     pageAnimationType: ScaleAnimationTransition()));
                     },
                     child: const SqureMenu(
                       title: 'AI\nChatbot',

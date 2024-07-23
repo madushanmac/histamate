@@ -64,7 +64,8 @@ class _PasswordResetState extends State<PasswordReset> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Enter your Email and we will send the password reset link',
+                textAlign: TextAlign.center,
+                'we will email you instructions \n to reset the password',
                 style: welcometextStyle,
               ),
             ),
@@ -72,7 +73,7 @@ class _PasswordResetState extends State<PasswordReset> {
 
             // Email input field
             InputTextField(
-              hintText: 'email@example.com',
+              hintText: 'Email',
               obsecureText: false,
               controller: _emailController,
             ),
@@ -88,45 +89,14 @@ class _PasswordResetState extends State<PasswordReset> {
             const SizedBox(height: height25),
 
             // Or continue with divider
-            const Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Divider(thickness: 2.5),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Text('Or continue with'),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Divider(thickness: 2.5),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: height25),
 
-            // Google and Apple sign-in options
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SqureTile(imagePath: 'assets/images/logos/google.png'),
-                SizedBox(width: 25.0),
-                SqureTile(imagePath: 'assets/images/logos/apple-logo.png'),
-              ],
-            ),
-            const SizedBox(height: 50.0),
 
             // Not a member? Register now
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Not a member?',
+                  'Already have an account?',
                   style: TextStyle(color: Colors.grey[700]),
                 ),
                 const SizedBox(width: 4.0),
@@ -140,7 +110,7 @@ class _PasswordResetState extends State<PasswordReset> {
                     );
                   },
                   child: const Text(
-                    'Login now',
+                    'Login in',
                     style: TextStyle(
                       color: Colors.blue,
                       fontWeight: FontWeight.bold,

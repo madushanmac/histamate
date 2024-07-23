@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -25,24 +26,31 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   void _fetchEvents() async {
-    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('notes').get();
-    Map<DateTime, List<Map<String, dynamic>>> events = {};
-    for (var doc in snapshot.docs) {
-      DateTime date = DateTime.parse(doc['date']);
-      // Ensure the date has no time component
-      DateTime eventDate = DateTime(date.year, date.month, date.day);
-      if (events[eventDate] == null) {
-        events[eventDate] = [];
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('notes')
+          .where('uid', isEqualTo: user.uid)
+          .get();
+
+      Map<DateTime, List<Map<String, dynamic>>> events = {};
+      for (var doc in snapshot.docs) {
+        DateTime date = DateTime.parse(doc['date']);
+        // Ensure the date has no time component
+        DateTime eventDate = DateTime(date.year, date.month, date.day);
+        if (events[eventDate] == null) {
+          events[eventDate] = [];
+        }
+        events[eventDate]!.add({
+          'id': doc.id, // Store the document ID here
+          'note': doc['note'],
+          'status': doc['status'],
+        });
       }
-      events[eventDate]!.add({
-        'id': doc.id, // Store the document ID here
-        'note': doc['note'],
-        'status': doc['status'],
+      setState(() {
+        _events = events;
       });
     }
-    setState(() {
-      _events = events;
-    });
   }
 
   void _deleteNote(String docId) async {
@@ -50,7 +58,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
     _fetchEvents(); // Refresh events after deleting a note
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Note deleted successfully.'),backgroundColor: Colors.red,
+        content: Text('Note deleted successfully.'),
+        backgroundColor: Colors.red,
       ),
     );
   }
@@ -124,6 +133,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             child: StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collection('notes')
+                  .where('uid', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
                   .where('date', isEqualTo: _selectedDay.toIso8601String().split('T')[0])
                   .snapshots(),
               builder: (context, snapshot) {
@@ -226,13 +236,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           contentPadding: const EdgeInsets.all(15),
           hintText: 'Enter your note here!',
           hintStyle: const TextStyle(color: Color(0xffDDDADA), fontSize: 14),
-          prefixIcon: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Image.asset(
-              'assets/icons/back.png',
-              width: 30,
-            ),
-          ),
+          prefixIcon: Icon(Icons.draw),
           suffixIcon: SizedBox(
             width: 100,
             child: IntrinsicHeight(
@@ -244,13 +248,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     indent: 10,
                     endIndent: 10,
                     thickness: 0.1,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                      'assets/icons/filter.png',
-                      width: 30,
-                    ),
                   ),
                 ],
               ),
@@ -266,29 +263,38 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Widget _statusDropdown() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: DropdownButtonFormField<String>(
-        value: _selectedStatus,
-        items: [
-          DropdownMenuItem(value: 'high', child: Text('High')),
-          DropdownMenuItem(value: 'medium', child: Text('Medium')),
-          DropdownMenuItem(value: 'low', child: Text('Low')),
-        ],
-        onChanged: (value) {
-          setState(() {
-            _selectedStatus = value!;
-          });
-        },
-        decoration: InputDecoration(
-          contentPadding: const EdgeInsets.all(15),
-          filled: true,
-          fillColor: Colors.grey[300],
-          hintText: 'Select Status',
-          hintStyle: const TextStyle(color: Color(0xffDDDADA), fontSize: 14),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide.none,
+    return Container(
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(
+          color: const Color(0xff1D1617).withOpacity(0.11),
+          blurRadius: 40,
+          spreadRadius: 0.0,
+        ),
+      ]),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: DropdownButtonFormField<String>(
+          value: _selectedStatus,
+          items: [
+            DropdownMenuItem(value: 'high', child: Text('High')),
+            DropdownMenuItem(value: 'medium', child: Text('Medium')),
+            DropdownMenuItem(value: 'low', child: Text('Low')),
+          ],
+          onChanged: (value) {
+            setState(() {
+              _selectedStatus = value!;
+            });
+          },
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.white,
+            contentPadding: const EdgeInsets.all(15),
+            hintText: '',
+            hintStyle: const TextStyle(color: Color(0xffDDDADA), fontSize: 14),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide.none,
+            ),
           ),
         ),
       ),
@@ -304,13 +310,23 @@ class _CalendarScreenState extends State<CalendarScreen> {
         ),
       );
     } else {
-      await FirebaseFirestore.instance.collection('notes').add({
-        'date': _selectedDay.toIso8601String().split('T')[0],
-        'note': _noteController.text,
-        'status': _selectedStatus,
-      });
-      _noteController.clear();
-      _fetchEvents(); // Refresh events after saving a new note
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await FirebaseFirestore.instance.collection('notes').add({
+          'date': _selectedDay.toIso8601String().split('T')[0],
+          'note': _noteController.text,
+          'status': _selectedStatus,
+          'uid': user.uid,
+        });
+        _noteController.clear();
+        _fetchEvents(); // Refresh events after saving a new note
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('User not logged in.', style: TextStyle(color: Colors.red)),
+          ),
+        );
+      }
     }
   }
 }

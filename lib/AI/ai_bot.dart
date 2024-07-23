@@ -16,7 +16,7 @@ import 'package:flutter_gemini_bot/models/chat_model.dart';
 class _ChatState extends State<Chat> {
 
   List<ChatModel> chatList = []; // Your list of ChatModel objects
-  String apiKey = 'AIzaSyALKH6vnmGd9MHGAtveqyAzxzcC5YKcR28';
+  String apiKey = '';
 
    @override
    Widget build(BuildContext context) {

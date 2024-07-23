@@ -115,7 +115,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: 100,
                 )),
             Text(
-              'Welcome back you Hista Mate\'ve been missed! ',
+              textAlign: TextAlign.center,
+              'Welcome back you HistaMate! \n Log in',
               style: welcometextStyle,
             ),
             const SizedBox(
@@ -124,12 +125,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
             // Username and Password fields
             InputTextField(
-              hintText: 'email',
+              hintText: 'Email',
               obsecureText: false,
               controller: usernameController,
             ),
             InputTextField(
-              hintText: 'password',
+              hintText: 'Password',
               obsecureText: true,
               controller: passwordController,
             ),
@@ -146,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               builder: (context) => PasswordReset()));
                     },
                     child: Text(
-                      "Forget password?.",
+                      "Forgot Password?",
                       style: TextStyle(
                           fontWeight: FontWeight.bold, letterSpacing: 1.2),
                     )),
@@ -160,62 +161,21 @@ class _LoginScreenState extends State<LoginScreen> {
             // Sign in button
             PrimaryButton(
               onTap: signUserIn,
-              label: 'Sign in',
+              label: 'Login',
             ),
 
             // Or continue with divider
             const SizedBox(
               height: height25,
             ),
-            const Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Divider(
-                      thickness: 2.5,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Text('Or continue with'),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Divider(
-                      thickness: 2.5,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: height25,
-            ),
 
-            // Google and Apple sign-in options
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SqureTile(imagePath: 'assets/images/logos/google.png'),
-                SizedBox(
-                  width: 25.0,
-                ),
-                SqureTile(imagePath: 'assets/images/logos/apple-logo.png'),
-              ],
-            ),
-            const SizedBox(
-              height: 50.0,
-            ),
 
             // Not a member? Register now
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Not a member ?',
+                  "Don't have an account? ",
                   style: TextStyle(color: Colors.grey[700]),
                 ),
                 const SizedBox(
@@ -229,7 +189,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             builder: (context) => const RegisterScreen()));
                   },
                   child: const Text(
-                    'Register now',
+                    'Sign up',
                     style: TextStyle(
                         color: Colors.blue, fontWeight: FontWeight.bold),
                   ),

@@ -118,8 +118,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
             Text(
-              'Register with Hista mate \nsget your helthy recomondation today',
-              style: boldtext,
+              textAlign: TextAlign.center,
+              'Welcome to Histamate!\n Sign up',
+              style: welcometextStyle,
             ),
             const SizedBox(
               height: height,
@@ -127,17 +128,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
             // Username and Password fields
             InputTextField(
-              hintText: 'username',
+              hintText: 'Username',
               obsecureText: false,
               controller: usernameController,
             ),
             InputTextField(
-              hintText: 'email',
+              hintText: 'Email',
               obsecureText: false,
               controller: emailcontroller,
             ),
             InputTextField(
-              hintText: 'password',
+              hintText: 'Password',
               obsecureText: true,
               controller: passwordcontroller,
             ),
@@ -150,62 +151,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
             // Sign up button
             PrimaryButton(
               onTap: signUserUp,
-              label: 'Sign up',
+              label: 'Sign Up',
             ),
 
             // Or continue with divider
             const SizedBox(
               height: height25,
             ),
-            const Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Divider(
-                      thickness: 2.5,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Text('Or Sign up with'),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Divider(
-                      thickness: 2.5,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: height25,
-            ),
 
-            // Google and Apple sign-in options
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SqureTile(imagePath: 'assets/images/logos/google.png'),
-                SizedBox(
-                  width: 25.0,
-                ),
-                SqureTile(imagePath: 'assets/images/logos/apple-logo.png'),
-              ],
-            ),
-            const SizedBox(
-              height: 50.0,
-            ),
 
             // Already have an account? Login now
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Already have an account ?',
+                  'Already have an account? ',
                   style: TextStyle(color: Colors.grey[700]),
                 ),
                 const SizedBox(
@@ -220,7 +180,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     );
                   },
                   child: const Text(
-                    'Login now',
+                    'Login in',
                     style: TextStyle(
                         color: Colors.blue, fontWeight: FontWeight.bold),
                   ),
