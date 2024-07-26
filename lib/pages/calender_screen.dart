@@ -115,7 +115,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             },
           ),
           _searchField(),
-          _statusDropdown(),
+          // _statusDropdown(),
           TextButton(
             style: TextButton.styleFrom(
               backgroundColor: Colors.blue[300],
@@ -201,7 +201,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   Color _getStatusColor(String status) {
     switch (status) {
-      case 'Headache':
+      case 'high':
         return Colors.red;
       case 'medium':
         return Colors.orange;
@@ -262,45 +262,45 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
-  Widget _statusDropdown() {
-    return Container(
-      decoration: BoxDecoration(boxShadow: [
-        BoxShadow(
-          color: const Color(0xff1D1617).withOpacity(0.11),
-          blurRadius: 40,
-          spreadRadius: 0.0,
-        ),
-      ]),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: DropdownButtonFormField<String>(
-          value: _selectedStatus,
-          items: [
-            DropdownMenuItem(value: 'high', child: Text('Headache')),
-            DropdownMenuItem(value: 'medium', child: Text('Medium')),
-            DropdownMenuItem(value: 'low', child: Text('Low')),
-            DropdownMenuItem(value: 'low', child: Text('Low')),
-          ],
-          onChanged: (value) {
-            setState(() {
-              _selectedStatus = value!;
-            });
-          },
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: Colors.white,
-            contentPadding: const EdgeInsets.all(15),
-            hintText: '',
-            hintStyle: const TextStyle(color: Color(0xffDDDADA), fontSize: 14),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide.none,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget _statusDropdown() {
+  //   return Container(
+  //     decoration: BoxDecoration(boxShadow: [
+  //       BoxShadow(
+  //         color: const Color(0xff1D1617).withOpacity(0.11),
+  //         blurRadius: 40,
+  //         spreadRadius: 0.0,
+  //       ),
+  //     ]),
+  //     child: Padding(
+  //       padding: const EdgeInsets.symmetric(horizontal: 20.0),
+  //       child: DropdownButtonFormField<String>(
+  //         value: _selectedStatus,
+  //         items: [
+  //           // DropdownMenuItem(value: 'high', child: Text('high')),
+  //           // DropdownMenuItem(value: 'medium', child: Text('Medium')),
+  //           // DropdownMenuItem(value: 'low', child: Text('Low')),
+  //           // DropdownMenuItem(value: 'low', child: Text('Low')),
+  //         ],
+  //         onChanged: (value) {
+  //           setState(() {
+  //             _selectedStatus = value!;
+  //           });
+  //         },
+  //         decoration: InputDecoration(
+  //           filled: true,
+  //           fillColor: Colors.white,
+  //           contentPadding: const EdgeInsets.all(15),
+  //           hintText: '',
+  //           hintStyle: const TextStyle(color: Color(0xffDDDADA), fontSize: 14),
+  //           border: OutlineInputBorder(
+  //             borderRadius: BorderRadius.circular(15),
+  //             borderSide: BorderSide.none,
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   void _saveNote() async {
     String searchText = _noteController.text;

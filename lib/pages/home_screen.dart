@@ -6,10 +6,7 @@ import 'package:hista_mate/pages/foods.dart';
 import 'package:hista_mate/pages/login_screen.dart';
 import 'package:hista_mate/pages/profile_details.dart';
 import 'package:hista_mate/styles/Styles.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:page_animation_transition/animations/fade_animation_transition.dart';
-import 'package:page_animation_transition/animations/scale_animation_transition.dart';
-import 'package:page_animation_transition/animations/top_to_bottom_faded.dart';
 import 'package:page_animation_transition/page_animation_transition.dart';
 import 'calender_screen.dart';
 import 'meal_recomondation.dart';
@@ -23,28 +20,58 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(25),
+          ),
+        ),
         centerTitle: true,
+        automaticallyImplyLeading: false,
         backgroundColor: whiteGrey,
         toolbarHeight: 70.0,
-        leading: user.photoURL != null
-            ? Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CircleAvatar(
-            backgroundImage: NetworkImage(user.photoURL!),
-          ),
-        )
-            : const Icon(Icons.account_circle, size: 40),
         title: Text(
           'Histamate',
           style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
-              onPressed: () async {
-                FirebaseAuth.instance.signOut();
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
-              },
-              icon: const Icon(Icons.logout))
+            onPressed: () async {
+              bool? shouldSignOut = await showDialog<bool>(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Confirm Sign Out'),
+                    content: Text('Are you sure you want to sign out?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(
+                              false); // Dismiss the dialog and return false
+                        },
+                        child: Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pop(true); // Dismiss the dialog and return true
+                        },
+                        child: Text('Sign Out'),
+                      ),
+                    ],
+                  );
+                },
+              );
+
+              if (shouldSignOut == true) {
+                await FirebaseAuth.instance.signOut();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                );
+              }
+            },
+            icon: const Icon(Icons.logout),
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -55,10 +82,9 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 20.0),
               const Row(
                 children: [
-                  SizedBox(width: 25.0),
                   Text(
                     'Dashboard',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -72,17 +98,14 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Foods()));
+                      Navigator.of(context).push(PageAnimationTransition(
+                          page: const Foods(),
+                          pageAnimationType: FadeAnimationTransition()));
                     },
                     child: const SqureMenu(
-                      title: 'Food Analyzer',
-                      borderColor: Color(0xffb86A789),
-                      backgroundColor: Color(0xffb86A789),
-                      icon: Iconsax.activity, backgroudcolor: Color(0xffb86A789),
-                    ),
+                        title: 'Food Analyzer',
+                        borderColor: Color(0xffb86A789),
+                        iconUrl: 'assets/icons/burger.png'),
                   ),
                   GestureDetector(
                     onTap: () {
@@ -93,21 +116,19 @@ class HomeScreen extends StatelessWidget {
                     child: const SqureMenu(
                       title: 'Meal Planner',
                       borderColor: Color.fromARGB(249, 192, 208, 194),
-                      backgroundColor: Color.fromARGB(249, 191, 206, 193),
-                      icon: Iconsax.activity, backgroudcolor: Color.fromARGB(249, 191, 206, 193),
+                      iconUrl: 'assets/icons/dinner.png',
                     ),
                   ),
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(PageAnimationTransition(
                           page: const CalendarScreen(),
-                          pageAnimationType: ScaleAnimationTransition()));
+                          pageAnimationType: FadeAnimationTransition()));
                     },
                     child: const SqureMenu(
-                      title: 'Symptoms Tracker',
+                      title: 'Daily Log',
                       borderColor: Color.fromARGB(249, 192, 208, 194),
-                      backgroundColor: Color.fromARGB(249, 191, 206, 193),
-                      icon: Iconsax.activity, backgroudcolor: Color.fromARGB(249, 191, 206, 193),
+                      iconUrl: 'assets/icons/calendar.png',
                     ),
                   ),
                   GestureDetector(
@@ -119,10 +140,9 @@ class HomeScreen extends StatelessWidget {
                       //     pageAnimationType: ScaleAnimationTransition()));
                     },
                     child: const SqureMenu(
-                      title: 'AI\nChatbot',
+                      title: 'AI Assistant',
                       borderColor: Color(0xffb86A789),
-                      backgroundColor: Color(0xffb86A789),
-                      icon: Iconsax.call, backgroudcolor: Color(0xffb86A789),
+                      iconUrl: 'assets/icons/bot.png',
                     ),
                   ),
                 ],
@@ -132,9 +152,9 @@ class HomeScreen extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(PageAnimationTransition(
                       page: Profile(),
-                      pageAnimationType: TopToBottomFadedTransition()));
+                      pageAnimationType: FadeAnimationTransition()));
                 },
-                label: 'PROFILE',
+                label: 'My Profile',
               ),
               const SizedBox(height: 10.0),
             ],

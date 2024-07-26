@@ -12,7 +12,7 @@ class MealRecommendation extends StatefulWidget {
 
 class _MealRecommendationState extends State<MealRecommendation> {
   final _formKey = GlobalKey<FormState>();
-  String _goal = 'Weight Loss';
+  String _goal = 'Any';
   String _preference = 'Vegetarian';
   List<Map<String, String>> _recommendations = [];
 
@@ -65,28 +65,6 @@ class _MealRecommendationState extends State<MealRecommendation> {
               ),
               SizedBox(height: 20),
               DropdownButtonFormField<String>(
-                value: _goal,
-                decoration: InputDecoration(
-                  labelText: 'Goal',
-                  border: OutlineInputBorder(),
-                  filled: true,
-                  fillColor: Colors.green[50],
-                ),
-                items: ['Weight Loss', 'Muscle Gain', 'Maintenance']
-                    .map((goal) => DropdownMenuItem(
-                  value: goal,
-                  child: Text(goal),
-                ))
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _goal = value!;
-                    fetchMeals(_goal, _preference);
-                  });
-                },
-              ),
-              SizedBox(height: 20),
-              DropdownButtonFormField<String>(
                 value: _preference,
                 decoration: InputDecoration(
                   labelText: 'Preference',
@@ -94,7 +72,7 @@ class _MealRecommendationState extends State<MealRecommendation> {
                   filled: true,
                   fillColor: Colors.green[50],
                 ),
-                items: ['Vegetarian', 'Vegan', 'Keto', 'None']
+                items: ['Vegetarian', 'Omnivore',]
                     .map((preference) => DropdownMenuItem(
                   value: preference,
                   child: Text(preference),
@@ -103,6 +81,30 @@ class _MealRecommendationState extends State<MealRecommendation> {
                 onChanged: (value) {
                   setState(() {
                     _preference = value!;
+                    fetchMeals(_goal, _preference);
+                  });
+                },
+              ),
+
+              SizedBox(height: 20),
+
+              DropdownButtonFormField<String>(
+                value: _goal,
+                decoration: InputDecoration(
+                  labelText: 'Goal',
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.green[50],
+                ),
+                items: ['Any', 'Low-Fat', 'Low-Sugar','High-Protein','Low-Carbohydrate']
+                    .map((goal) => DropdownMenuItem(
+                  value: goal,
+                  child: Text(goal),
+                ))
+                    .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _goal = value!;
                     fetchMeals(_goal, _preference);
                   });
                 },
@@ -143,7 +145,6 @@ class _MealRecommendationState extends State<MealRecommendation> {
                             color: Colors.green[800],
                           ),
                         ),
-                        trailing: Text(rec['Description']!),
                       ),
                     );
                   },

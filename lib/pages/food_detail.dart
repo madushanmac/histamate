@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hista_mate/pages/home_screen.dart';
-import 'package:page_animation_transition/animations/scale_animation_transition.dart';
-import 'package:page_animation_transition/page_animation_transition.dart';
+
 
 class FoodDetail extends StatelessWidget {
   const FoodDetail({
@@ -50,27 +48,27 @@ class FoodDetail extends StatelessWidget {
         ),
         centerTitle: true,
         actions: [
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(PageAnimationTransition(
-                  page: HomeScreen(),
-                  pageAnimationType: ScaleAnimationTransition()));
-            },
-            child: Container(
-              margin: const EdgeInsets.all(10),
-              alignment: Alignment.center,
-              width: 37,
-              decoration: BoxDecoration(
-                color: const Color(0xffF7F8F8),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Image.asset(
-                'assets/icons/application.png',
-                height: 25,
-                width: 25,
-              ),
-            ),
-          ),
+          // GestureDetector(
+          //   onTap: () {
+          //     Navigator.of(context).push(PageAnimationTransition(
+          //         page: HomeScreen(),
+          //         pageAnimationType: ScaleAnimationTransition()));
+          //   },
+          //   child: Container(
+          //     margin: const EdgeInsets.all(10),
+          //     alignment: Alignment.center,
+          //     width: 37,
+          //     decoration: BoxDecoration(
+          //       color: const Color(0xffF7F8F8),
+          //       borderRadius: BorderRadius.circular(10),
+          //     ),
+          //     child: Image.asset(
+          //       'assets/icons/application.png',
+          //       height: 25,
+          //       width: 25,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
       body: ListView(

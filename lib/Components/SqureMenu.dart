@@ -6,11 +6,11 @@ class SqureMenu extends StatelessWidget {
       required this.title,
       required this.borderColor,
 
-      required this.icon, required Color backgroundColor, required this.backgroudcolor});
+     required this.iconUrl});
 
-  final String title;
-  final Color borderColor, backgroudcolor;
-  final IconData icon;
+  final String title,iconUrl;
+  final Color borderColor;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +27,11 @@ class SqureMenu extends StatelessWidget {
             child: Column(
           children: [
             Text(
+              textAlign: TextAlign.center,
               title,
               style: const TextStyle(fontSize: 20.0),
             ),
-            Icon(icon,size: 60,)
+            Image.asset(iconUrl,width: 75,height: 75,)
           ],
         )));
   }

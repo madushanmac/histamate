@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_rating_bar/custom_rating_bar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:hista_mate/models/category_model.dart';
 
@@ -14,7 +14,7 @@ class Foods extends StatefulWidget {
 class _FoodsState extends State<Foods> {
   final _firestore = FirebaseFirestore.instance.collection('foods');
   final _searchController = TextEditingController();
-  final List<String> ingredients = ['bacon', 'cheese', 'sausages', 'chicken']; // update ingredients
+  final List<String> ingredients = ['Gelatin', 'Tomato', 'Vinegar', 'Caffeine','Yeast']; // update ingredients
 
   List<String> selectedIngredients = [];
   List<Map<String, dynamic>> _posts = [];
@@ -93,105 +93,116 @@ class _FoodsState extends State<Foods> {
           _searchField(),
           Column(
             children: [
-              Container(
-
-                padding: EdgeInsets.all(8.0),
-                margin: EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: ingredients.map((e) {
-                    final isSelected = selectedIngredients.contains(e);
-                    return Flexible(
-                      child: FilterChip(
-                        label: Text(e.toString()),
-                        selected: isSelected,
-                        onSelected: (_) => _toggleIngredientSelection(e),
-                        selectedColor: Colors.blueAccent,
-                        checkmarkColor: Colors.white,
-                      ),
-                    );
-                  }).toList(),
+          Container(
+          padding: EdgeInsets.all(8.0),
+      margin: EdgeInsets.all(8.0),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: ingredients.map((e) {
+            final isSelected = selectedIngredients.contains(e);
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: FilterChip(
+                label: Text(
+                  e,
+                  style: TextStyle(
+                    color: isSelected ? Colors.white : Colors.black,
+                  ),
+                ),
+                selected: isSelected,
+                onSelected: (_) => _toggleIngredientSelection(e),
+                selectedColor: Colors.lightGreen,
+                checkmarkColor: Colors.white,
+                backgroundColor: Colors.grey[200],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
+            );
+          }).toList(),
+        ),
+      ),
+    )
             ],
           ),
           midContainer(),
-          _similarFoods(),
+          // _similarFoods(),
         ],
       ),
     );
   }
 
-  Column _similarFoods() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 20.0),
-          child: Text(
-            'Similar Products',
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 2.0),
-          ),
-        ),
-        SizedBox(
-          height: 10.0,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 10.0),
-          child: Container(
-            height: 120.0,
-            child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: categories.length,
-                separatorBuilder: (context, index) => SizedBox(
-                  width: 25.0,
-                ),
-                itemBuilder: (context, index) {
-                  return Container(
-                    width: 100,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: categories[index].boxColor.withOpacity(0.3)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                              color: Colors.white, shape: BoxShape.circle),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Image.asset(categories[index].iconPath),
-                          ),
-                        ),
-                        Text(
-                          categories[index].name,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        )
-                      ],
-                    ),
-                  );
-                }),
-          ),
-        ),
-      ],
-    );
-  }
+  // Column _similarFoods() {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       Padding(
+  //         padding: const EdgeInsets.only(left: 20.0),
+  //         child: Text(
+  //           'Similar Products',
+  //           style: TextStyle(
+  //               color: Colors.black,
+  //               fontSize: 18,
+  //               fontWeight: FontWeight.w600,
+  //               letterSpacing: 2.0),
+  //         ),
+  //       ),
+  //       SizedBox(
+  //         height: 10.0,
+  //       ),
+  //       Padding(
+  //         padding: const EdgeInsets.only(left: 10.0),
+  //         child: Container(
+  //           height: 120.0,
+  //           child: ListView.separated(
+  //               scrollDirection: Axis.horizontal,
+  //               itemCount: categories.length,
+  //               separatorBuilder: (context, index) => SizedBox(
+  //                 width: 25.0,
+  //               ),
+  //               itemBuilder: (context, index) {
+  //                 return Container(
+  //                   width: 100,
+  //                   decoration: BoxDecoration(
+  //                       borderRadius: BorderRadius.circular(16),
+  //                       color: categories[index].boxColor.withOpacity(0.3)),
+  //                   child: Column(
+  //                     mainAxisAlignment: MainAxisAlignment.center,
+  //                     children: [
+  //                       Container(
+  //                         width: 50,
+  //                         height: 50,
+  //                         decoration: BoxDecoration(
+  //                             color: Colors.white, shape: BoxShape.circle),
+  //                         child: Padding(
+  //                           padding: const EdgeInsets.all(8.0),
+  //                           child: Image.asset(categories[index].iconPath),
+  //                         ),
+  //                       ),
+  //                       Text(
+  //                         categories[index].name,
+  //                         style: TextStyle(
+  //                           fontWeight: FontWeight.bold,
+  //                           fontSize: 14,
+  //                         ),
+  //                       )
+  //                     ],
+  //                   ),
+  //                 );
+  //               }),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   // mid container filtered items
   Widget midContainer() {
     return Container(
       margin: const EdgeInsets.all(5.0),
       padding: const EdgeInsets.all(8.0),
-      height: 300.0,
+      height: MediaQuery.sizeOf(context).height * 1,
       child: _filteredPosts.isEmpty
           ? Center(
         child: Text(
@@ -225,7 +236,7 @@ class _FoodsState extends State<Foods> {
                     width: 80, height: 120, fit: BoxFit.contain)
                     : const Icon(Icons.image_not_supported),
                 trailing: SizedBox(
-                  width: 100,
+                  width: 75,
                   height: 20,
                   child: RatingBar(
                     size: 15,

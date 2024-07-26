@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hista_mate/Components/Primary_button.dart';
+
 import 'package:hista_mate/styles/Styles.dart';
 
 class Profile extends StatelessWidget {
@@ -26,7 +26,7 @@ class Profile extends StatelessWidget {
               height: 50.0,
             ),
             Container(
-              width: 400.0,
+              width: 350.0,
               decoration: BoxDecoration(
                   color: const Color(
                       0xffb86A789), // Or customize the background color
@@ -48,22 +48,28 @@ class Profile extends StatelessWidget {
                         ),
                   const SizedBox(
                       height: 16), // Add spacing between icon and text
-                  Text(user.email ?? ''),
-                  // Text(
-                  //   user.displayName ?? 'no name',
-                  //   style: TextStyle(color: Colors.black),
-                  // ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+
+                      Text('Email : '),
+                      Text(user.email ?? ''),
+
+                    ],
+                  ),
+
+
+                  Text(
+                    user.displayName ?? 'your name is not included',
+                    style: TextStyle(color: Colors.black),
+                  ),
                 ],
               ),
             ),
             const SizedBox(
               height: 50.0,
             ),
-            PrimaryButton(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                label: 'OK')
+
           ],
         ),
       ]),
