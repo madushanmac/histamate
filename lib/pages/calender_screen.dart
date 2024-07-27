@@ -69,15 +69,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(
-          'SYMPTOMS TRACKER',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1,
-          ),
-        ),
+        elevation: 0.0,
+        title: Text('Symtoms tracker'),
+        backgroundColor: Color(0xFFE1F1D8),
       ),
       body: Column(
         children: [
@@ -162,12 +156,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         ),
                         trailing: IconButton(
                           icon: Icon(
-                            Iconsax.calendar_remove,
-                            size: 30.0,
-                            color: Colors.red,
+                            Icons.delete_outlined
+                            ,
+                            size: 35.0,
+                            color: Colors.black,
                           ),
                           onPressed: () {
-                            _deleteNote(docId); // Use the document ID to delete the note
+                            _showDeleteConfirmationDialog(context, docId); // Use the document ID to delete the note
                           },
                         ),
                       ),
@@ -202,13 +197,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Color _getStatusColor(String status) {
     switch (status) {
       case 'high':
-        return Colors.red;
+        return Colors.black;
       case 'medium':
-        return Colors.orange;
+        return Colors.black;
       case 'low':
-        return Colors.green;
+        return Colors.black;
       default:
-        return Colors.blue;
+        return Colors.black;
     }
   }
 
@@ -329,5 +324,33 @@ class _CalendarScreenState extends State<CalendarScreen> {
         );
       }
     }
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context, String docId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Delete'),
+          content: Text('Are you sure you want to delete this note?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Dismiss the dialog
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                _deleteNote(docId); // Use the document ID to delete the note
+                Navigator.of(context).pop(); // Dismiss the dialog
+              },
+              child: Text('Delete'),
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

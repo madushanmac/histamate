@@ -5,7 +5,7 @@ final shadecoloer400 = Colors.grey.shade400;
 final shadecoloer200 = Colors.grey.shade200;
 const blackColor = Colors.black;
 final welcometextStyle = TextStyle(color: Colors.grey[700],
-fontSize: 16.0,fontFamily: 'Roboto',);
+fontSize: 20.0,fontFamily: 'Roboto',);
 
 const boldtext =  TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0);
 

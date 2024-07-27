@@ -29,7 +29,7 @@ class Profile extends StatelessWidget {
               width: 350.0,
               decoration: BoxDecoration(
                   color: const Color(
-                      0xffb86A789), // Or customize the background color
+                      0xFFE1F1D8), // Or customize the background color
                   borderRadius: BorderRadius.circular(10.0)),
               height: 300.0,
               padding: const EdgeInsets.all(20.0),
@@ -59,9 +59,16 @@ class Profile extends StatelessWidget {
                   ),
 
 
-                  Text(
-                    user.displayName ?? 'your name is not included',
-                    style: TextStyle(color: Colors.black),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+
+                      Text('User name : '),
+                      Text(
+                        user.displayName ?? 'your name is not included',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ],
                   ),
                 ],
               ),

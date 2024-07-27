@@ -37,7 +37,7 @@ class _PasswordResetState extends State<PasswordReset> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('May I please have your email address?.'),
+          content: Text('Please enter your email address.'),
         ),
       );
     }

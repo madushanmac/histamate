@@ -46,8 +46,8 @@ class _MealRecommendationState extends State<MealRecommendation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Meal Recommendation'),
-        backgroundColor: Colors.green,
+        title: Text('Meal Planner'),
+        backgroundColor: Color(0xFFE1F1D8),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),

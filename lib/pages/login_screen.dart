@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hista_mate/pages/home_screen.dart';
+import 'package:hista_mate/pages/ownership_label.dart';
 import 'package:hista_mate/pages/passwordReset.dart';
 import 'package:hista_mate/pages/register_screen.dart';
 
@@ -62,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
         pageBuilder: (context, _, __) {
           return AlertDialog(
             title: const Text('Authentication Failed'),
-            content: Text(_getErrorText(e.code)),
+            content: Text(_getErrorText(e.code),textAlign: TextAlign.center,),
             actions: [
               TextButton(
                 onPressed: () {
@@ -79,15 +80,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // Method to get error message based on error code
   String _getErrorText(String errorCode) {
+    print(errorCode);
     switch (errorCode) {
-      case 'invalid-email':
-        return 'Invalid email.';
+      case 'invalid-credential':
+        return 'Login Failed Please enter the correct password';
       case 'wrong-password':
-        return 'Wrong password provided.';
+        return 'Please enter the correct password.';
       case 'user-not-found':
-        return 'No user found for that email.';
-      case 'user-disabled':
-        return 'User account has been disabled.';
+        return 'Login Failed User not found';
+      case 'channel-error':
+        return 'Login Failed Provide the required information to login';
       case 'too-many-requests':
         return 'Too many attempts. Please try again later.';
       default:
@@ -99,103 +101,106 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: whiteGrey,
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Logo and welcome message
-            const SizedBox(
-              height: 50.0,
-            ),
-            Center(
-                child: Image.asset(
-                  'assets/images/splash.png',
-                  height: 100,
-                  width: 100,
-                )),
-            Text(
-              textAlign: TextAlign.center,
-              'Welcome back you HistaMate! \n Log in',
-              style: welcometextStyle,
-            ),
-            const SizedBox(
-              height: height,
-            ),
+      body: OwnershipLabel(
+        ownerName: 'Assign Pro ',
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Logo and welcome message
+              const SizedBox(
+                height: 50.0,
+              ),
+              Center(
+                  child: Image.asset(
+                    'assets/images/splash.png',
+                    height: 100,
+                    width: 100,
+                  )),
+              Text(
+                textAlign: TextAlign.center,
+                'Welcome back to HistaMate! \n Log in',
+                style: welcometextStyle,
+              ),
+              const SizedBox(
+                height: height,
+              ),
 
-            // Username and Password fields
-            InputTextField(
-              hintText: 'Email',
-              obsecureText: false,
-              controller: usernameController,
-            ),
-            InputTextField(
-              hintText: 'Password',
-              obsecureText: true,
-              controller: passwordController,
-            ),
+              // Username and Password fields
+              InputTextField(
+                hintText: 'Email',
+                obsecureText: false,
+                controller: usernameController,
+              ),
+              InputTextField(
+                hintText: 'Password',
+                obsecureText: true,
+                controller: passwordController,
+              ),
 
-            // Forgot password
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                InkWell(
+              // Forgot password
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PasswordReset()));
+                      },
+                      child: Text(
+                        "Forgot Password?",
+                        style: TextStyle(
+                             letterSpacing: 1.2),
+                      )),
+                  Padding(padding: EdgeInsets.symmetric(horizontal: 10.0))
+                ],
+              ),
+              const SizedBox(
+                height: height25,
+              ),
+
+              // Sign in button
+              PrimaryButton(
+                onTap: signUserIn,
+                label: 'Login',
+              ),
+
+              // Or continue with divider
+              const SizedBox(
+                height: height25,
+              ),
+
+
+              // Not a member? Register now
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Don't have an account? ",
+                    style: TextStyle(color: Colors.grey[700]),
+                  ),
+                  const SizedBox(
+                    width: 4.0,
+                  ),
+                  InkWell(
                     onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PasswordReset()));
+                              builder: (context) => const RegisterScreen()));
                     },
-                    child: Text(
-                      "Forgot Password?",
+                    child: const Text(
+                      'Sign up',
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, letterSpacing: 1.2),
-                    )),
-                Padding(padding: EdgeInsets.symmetric(horizontal: 10.0))
-              ],
-            ),
-            const SizedBox(
-              height: height25,
-            ),
-
-            // Sign in button
-            PrimaryButton(
-              onTap: signUserIn,
-              label: 'Login',
-            ),
-
-            // Or continue with divider
-            const SizedBox(
-              height: height25,
-            ),
-
-
-            // Not a member? Register now
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Don't have an account? ",
-                  style: TextStyle(color: Colors.grey[700]),
-                ),
-                const SizedBox(
-                  width: 4.0,
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const RegisterScreen()));
-                  },
-                  child: const Text(
-                    'Sign up',
-                    style: TextStyle(
-                        color: Colors.blue, fontWeight: FontWeight.bold),
-                  ),
-                )
-              ],
-            )
-          ],
+                          color: Colors.blue, fontWeight: FontWeight.bold),
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

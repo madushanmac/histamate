@@ -3,6 +3,8 @@ import 'package:custom_rating_bar/custom_rating_bar.dart';
 
 import 'package:flutter/material.dart';
 import 'package:hista_mate/models/category_model.dart';
+import 'package:hista_mate/pages/ownership_label.dart';
+import 'package:iconsax/iconsax.dart';
 
 class Foods extends StatefulWidget {
   const Foods({Key? key}) : super(key: key);
@@ -88,47 +90,50 @@ class _FoodsState extends State<Foods> {
     _getCategories();
     return Scaffold(
       appBar: appBar(),
-      body: ListView(
-        children: [
-          _searchField(),
-          Column(
-            children: [
-          Container(
-          padding: EdgeInsets.all(8.0),
-      margin: EdgeInsets.all(8.0),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: ingredients.map((e) {
-            final isSelected = selectedIngredients.contains(e);
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: FilterChip(
-                label: Text(
-                  e,
-                  style: TextStyle(
-                    color: isSelected ? Colors.white : Colors.black,
+      body: OwnershipLabel(
+        ownerName: 'Assign Pro ',
+        child: ListView(
+          children: [
+            _searchField(),
+            Column(
+              children: [
+            Container(
+            padding: EdgeInsets.all(8.0),
+        margin: EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: ingredients.map((e) {
+              final isSelected = selectedIngredients.contains(e);
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                child: FilterChip(
+                  label: Text(
+                    e,
+                    style: TextStyle(
+                      color: isSelected ? Colors.white : Colors.black,
+                    ),
+                  ),
+                  selected: isSelected,
+                  onSelected: (_) => _toggleIngredientSelection(e),
+                  selectedColor: Colors.lightGreen,
+                  checkmarkColor: Colors.white,
+                  backgroundColor: Colors.grey[200],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
-                selected: isSelected,
-                onSelected: (_) => _toggleIngredientSelection(e),
-                selectedColor: Colors.lightGreen,
-                checkmarkColor: Colors.white,
-                backgroundColor: Colors.grey[200],
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-            );
-          }).toList(),
-        ),
-      ),
-    )
-            ],
+              );
+            }).toList(),
           ),
-          midContainer(),
-          // _similarFoods(),
-        ],
+        ),
+            )
+              ],
+            ),
+            midContainer(),
+            // _similarFoods(),
+          ],
+        ),
       ),
     );
   }
@@ -229,17 +234,17 @@ class _FoodsState extends State<Foods> {
                     letterSpacing: 0.5,
                   ),
                 ),
-                subtitle: Text(post['description'] ?? 'No Description'),
+                subtitle: Text(post['description'] ?? 'No Description',style: TextStyle(fontSize: 15.0),),
                 leading: (post['imageUrl'] != null &&
                     post['imageUrl']!.isNotEmpty)
                     ? Image.network(post['imageUrl']!,
                     width: 80, height: 120, fit: BoxFit.contain)
                     : const Icon(Icons.image_not_supported),
                 trailing: SizedBox(
-                  width: 75,
+                  width: 100,
                   height: 20,
                   child: RatingBar(
-                    size: 15,
+                    size: 20,
                     initialRating: post['rating'] ?? 0,
                     maxRating: 5,
                     emptyIcon: Icons.star,
@@ -268,39 +273,9 @@ class _FoodsState extends State<Foods> {
   // app bar section
   AppBar appBar() {
     return AppBar(
-      title: const Text(
-        'MEALS FOR YOU',
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 1,
-        ),
-      ),
-      backgroundColor: Colors.white,
       elevation: 0.0,
-      centerTitle: true,
-      leading: GestureDetector(
-        onTap: () async {
-          Navigator.pop(context);
-        },
-        child: Container(
-          margin: const EdgeInsets.all(10),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: const Color(0xffF7F8F8),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Image.asset(
-            'assets/icons/back.png',
-            height: 25,
-            width: 25,
-          ),
-        ),
-      ),
-      actions: [
-
-      ],
+      title: Text('Food analyzer'),
+      backgroundColor: Color(0xFFE1F1D8),
     );
   }
 
@@ -327,10 +302,7 @@ class _FoodsState extends State<Foods> {
           hintStyle: const TextStyle(color: Color(0xffDDDADA), fontSize: 14),
           prefixIcon: Padding(
             padding: const EdgeInsets.all(12),
-            child: Image.asset(
-              'assets/icons/search.png',
-              width: 30,
-            ),
+            child: Icon(Iconsax.search_normal,size: 25,)
           ),
           suffixIcon: SizedBox(
             width: 100,
