@@ -144,11 +144,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       color: Colors.grey[200],
                       child: ListTile(
                         contentPadding: EdgeInsets.all(5.0),
-                        leading: Image.network(
-                          width: 30,
-                          height: 30,
-                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcdQ09IwvGZDsOdOOTtuds8SqOH-ATH_ZnTw&s',
-                        ),
+
                         title: Text(
                           noteText,
                           style: TextStyle(fontWeight: FontWeight.bold),

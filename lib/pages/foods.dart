@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_rating_bar/custom_rating_bar.dart';
-
 import 'package:flutter/material.dart';
 import 'package:hista_mate/models/category_model.dart';
-import 'package:hista_mate/pages/ownership_label.dart';
 import 'package:iconsax/iconsax.dart';
 
 class Foods extends StatefulWidget {
@@ -90,50 +88,47 @@ class _FoodsState extends State<Foods> {
     _getCategories();
     return Scaffold(
       appBar: appBar(),
-      body: OwnershipLabel(
-        ownerName: 'Assign Pro ',
-        child: ListView(
-          children: [
-            _searchField(),
-            Column(
-              children: [
-            Container(
-            padding: EdgeInsets.all(8.0),
-        margin: EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: ingredients.map((e) {
-              final isSelected = selectedIngredients.contains(e);
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                child: FilterChip(
-                  label: Text(
-                    e,
-                    style: TextStyle(
-                      color: isSelected ? Colors.white : Colors.black,
-                    ),
-                  ),
-                  selected: isSelected,
-                  onSelected: (_) => _toggleIngredientSelection(e),
-                  selectedColor: Colors.lightGreen,
-                  checkmarkColor: Colors.white,
-                  backgroundColor: Colors.grey[200],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+      body: ListView(
+        children: [
+          _searchField(),
+          Column(
+            children: [
+          Container(
+          padding: EdgeInsets.all(8.0),
+      margin: EdgeInsets.all(8.0),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: ingredients.map((e) {
+            final isSelected = selectedIngredients.contains(e);
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: FilterChip(
+                label: Text(
+                  e,
+                  style: TextStyle(
+                    color: isSelected ? Colors.white : Colors.black,
                   ),
                 ),
-              );
-            }).toList(),
+                selected: isSelected,
+                onSelected: (_) => _toggleIngredientSelection(e),
+                selectedColor: Colors.lightGreen,
+                checkmarkColor: Colors.white,
+                backgroundColor: Colors.grey[200],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ),
+          )
+            ],
           ),
-        ),
-            )
-              ],
-            ),
-            midContainer(),
-            // _similarFoods(),
-          ],
-        ),
+          midContainer(),
+          // _similarFoods(),
+        ],
       ),
     );
   }
