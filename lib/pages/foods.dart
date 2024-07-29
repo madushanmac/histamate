@@ -133,69 +133,7 @@ class _FoodsState extends State<Foods> {
     );
   }
 
-  // Column _similarFoods() {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       Padding(
-  //         padding: const EdgeInsets.only(left: 20.0),
-  //         child: Text(
-  //           'Similar Products',
-  //           style: TextStyle(
-  //               color: Colors.black,
-  //               fontSize: 18,
-  //               fontWeight: FontWeight.w600,
-  //               letterSpacing: 2.0),
-  //         ),
-  //       ),
-  //       SizedBox(
-  //         height: 10.0,
-  //       ),
-  //       Padding(
-  //         padding: const EdgeInsets.only(left: 10.0),
-  //         child: Container(
-  //           height: 120.0,
-  //           child: ListView.separated(
-  //               scrollDirection: Axis.horizontal,
-  //               itemCount: categories.length,
-  //               separatorBuilder: (context, index) => SizedBox(
-  //                 width: 25.0,
-  //               ),
-  //               itemBuilder: (context, index) {
-  //                 return Container(
-  //                   width: 100,
-  //                   decoration: BoxDecoration(
-  //                       borderRadius: BorderRadius.circular(16),
-  //                       color: categories[index].boxColor.withOpacity(0.3)),
-  //                   child: Column(
-  //                     mainAxisAlignment: MainAxisAlignment.center,
-  //                     children: [
-  //                       Container(
-  //                         width: 50,
-  //                         height: 50,
-  //                         decoration: BoxDecoration(
-  //                             color: Colors.white, shape: BoxShape.circle),
-  //                         child: Padding(
-  //                           padding: const EdgeInsets.all(8.0),
-  //                           child: Image.asset(categories[index].iconPath),
-  //                         ),
-  //                       ),
-  //                       Text(
-  //                         categories[index].name,
-  //                         style: TextStyle(
-  //                           fontWeight: FontWeight.bold,
-  //                           fontSize: 14,
-  //                         ),
-  //                       )
-  //                     ],
-  //                   ),
-  //                 );
-  //               }),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
+
 
   // mid container filtered items
   Widget midContainer() {
@@ -235,28 +173,28 @@ class _FoodsState extends State<Foods> {
                     ? Image.network(post['imageUrl']!,
                     width: 80, height: 120, fit: BoxFit.contain)
                     : const Icon(Icons.image_not_supported),
-                trailing: SizedBox(
-                  width: 100,
-                  height: 20,
-                  child: RatingBar(
-                    size: 20,
-                    initialRating: post['rating'] ?? 0,
-                    maxRating: 5,
-                    emptyIcon: Icons.star,
-                    filledColor: Colors.orange,
-                    emptyColor: Colors.grey,
-                    halfFilledColor: Colors.orangeAccent,
-                    onRatingChanged: (rating) async {
-                      await _firestore
-                          .doc(post['id'])
-                          .update({'rating': rating});
-                      setState(() {
-                        post['rating'] = rating;
-                      });
-                    },
-                    filledIcon: Icons.star,
-                  ),
-                ),
+                // trailing: SizedBox(
+                //   width: 100,
+                //   height: 20,
+                //   child: RatingBar(
+                //     size: 20,
+                //     initialRating: post['rating'] ?? 0,
+                //     maxRating: 5,
+                //     emptyIcon: Icons.star,
+                //     filledColor: Colors.orange,
+                //     emptyColor: Colors.grey,
+                //     halfFilledColor: Colors.orangeAccent,
+                //     onRatingChanged: (rating) async {
+                //       await _firestore
+                //           .doc(post['id'])
+                //           .update({'rating': rating});
+                //       setState(() {
+                //         post['rating'] = rating;
+                //       });
+                //     },
+                //     filledIcon: Icons.star,
+                //   ),
+                // ),
               ),
             ),
           );
